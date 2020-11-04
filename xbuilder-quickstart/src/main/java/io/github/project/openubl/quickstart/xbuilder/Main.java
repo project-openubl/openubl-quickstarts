@@ -16,6 +16,8 @@
  */
 package io.github.project.openubl.quickstart.xbuilder;
 
+import io.github.project.openubl.quickstart.xbuilder.utils.CertificateDetails;
+import io.github.project.openubl.quickstart.xbuilder.utils.CertificateDetailsFactory;
 import io.github.project.openubl.xmlbuilderlib.clock.SystemClock;
 import io.github.project.openubl.xmlbuilderlib.config.Config;
 import io.github.project.openubl.xmlbuilderlib.facade.DocumentManager;
@@ -26,9 +28,29 @@ import io.github.project.openubl.xmlbuilderlib.models.input.common.ProveedorInpu
 import io.github.project.openubl.xmlbuilderlib.models.input.standard.DocumentLineInputModel;
 import io.github.project.openubl.xmlbuilderlib.models.input.standard.invoice.InvoiceInputModel;
 import io.github.project.openubl.xmlbuilderlib.models.output.standard.invoice.InvoiceOutputModel;
+import io.github.project.openubl.xmlbuilderlib.xml.XMLSigner;
+import io.github.project.openubl.xmlbuilderlib.xml.XmlSignatureHelper;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.dsig.XMLSignatureException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.security.*;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class Main {
     public static InvoiceInputModel invoiceFactory() {
@@ -61,7 +83,7 @@ public class Main {
                 .build();
     }
 
-    public static void main(String[] args) {
+    public static String createUnsignedXML() {
         // General config
         Config config = UBLConfigSingleton.getInstance().getConfig();
         SystemClock clock = UBLConfigSingleton.getInstance().getClock();
@@ -69,10 +91,32 @@ public class Main {
         // Invoice generation
         InvoiceInputModel input = invoiceFactory();
         DocumentWrapper<InvoiceOutputModel> result = DocumentManager.createXML(input, config, clock);
-        String xml = result.getXml();
+        return result.getXml();
+    }
 
-        // Print results
-        System.out.println("Tu XML es:");
+    public static Document signXML(String xml) throws Exception {
+        InputStream ksInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("LLAMA-PE-CERTIFICADO-DEMO-12345678912.pfx");
+        CertificateDetails certificate = CertificateDetailsFactory.create(ksInputStream, "password");
+
+        X509Certificate x509Certificate = certificate.getX509Certificate();
+        PrivateKey privateKey = certificate.getPrivateKey();
+        return XMLSigner.signXML(xml, "Project OpenUBL", x509Certificate, privateKey);
+    }
+
+    public static void main(String[] args) throws Exception {
+        // Create XML
+        String xml = createUnsignedXML();
+
+        System.out.println("Your XML is:");
         System.out.println(xml);
+
+        // Sign XML
+        Document signedXML = signXML(xml);
+
+        byte[] bytesFromDocument = XmlSignatureHelper.getBytesFromDocument(signedXML);
+        String signedXMLString = new String(bytesFromDocument, StandardCharsets.ISO_8859_1);
+
+        System.out.println("\n Your signed XML is:");
+        System.out.println(signedXMLString);
     }
 }
