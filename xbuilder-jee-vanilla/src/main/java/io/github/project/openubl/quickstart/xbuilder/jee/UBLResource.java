@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.project.openubl.quickstart.jee;
+package io.github.project.openubl.quickstart.xbuilder.jee;
 
-import io.github.project.openubl.quickstart.jee.config.UBLConfigSingleton;
+import io.github.project.openubl.quickstart.xbuilder.jee.config.UBLConfigSingleton;
 import io.github.project.openubl.xmlbuilderlib.clock.SystemClock;
 import io.github.project.openubl.xmlbuilderlib.config.Config;
 import io.github.project.openubl.xmlbuilderlib.facade.DocumentManager;
