@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.project.openubl.quickstart.jee;
+package io.github.project.openubl.quickstart.xbuilder.jee;
 
 import io.github.project.openubl.xmlbuilderlib.models.catalogs.Catalog6;
 import io.github.project.openubl.xmlbuilderlib.models.input.common.ClienteInputModel;
