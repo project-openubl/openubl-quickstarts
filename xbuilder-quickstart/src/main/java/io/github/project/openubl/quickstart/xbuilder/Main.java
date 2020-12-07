@@ -1,13 +1,13 @@
 /**
  * Copyright 2019 Project OpenUBL, Inc. and/or its affiliates
  * and other contributors as indicated by the @author tags.
- *
+ * <p>
  * Licensed under the Eclipse Public License - v 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * https://www.eclipse.org/legal/epl-2.0/
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,28 +31,53 @@ import io.github.project.openubl.xmlbuilderlib.models.output.standard.invoice.In
 import io.github.project.openubl.xmlbuilderlib.xml.XMLSigner;
 import io.github.project.openubl.xmlbuilderlib.xml.XmlSignatureHelper;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.crypto.MarshalException;
-import javax.xml.crypto.dsig.XMLSignatureException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
-import java.util.Base64;
 
 public class Main {
+
+    public static void main(String[] args) throws Exception {
+        // Create XML
+        String xml = createUnsignedXML();
+
+        System.out.println("Your XML is:");
+        System.out.println(xml);
+
+        // Sign XML
+        Document signedXML = signXML(xml);
+
+        byte[] bytesFromDocument = XmlSignatureHelper.getBytesFromDocument(signedXML);
+        String signedXMLString = new String(bytesFromDocument, StandardCharsets.ISO_8859_1);
+
+        System.out.println("\n Your signed XML is:");
+        System.out.println(signedXMLString);
+    }
+
+    public static String createUnsignedXML() {
+        // General config
+        Config config = ConfigSingleton.getInstance().getConfig();
+        SystemClock clock = ConfigSingleton.getInstance().getClock();
+
+        // Invoice generation
+        InvoiceInputModel input = invoiceFactory();
+        DocumentWrapper<InvoiceOutputModel> result = DocumentManager.createXML(input, config, clock);
+        return result.getXml();
+    }
+
+    public static Document signXML(String xml) throws Exception {
+        InputStream ksInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("LLAMA-PE-CERTIFICADO-DEMO-12345678912.pfx");
+        CertificateDetails certificate = CertificateDetailsFactory.create(ksInputStream, "password");
+
+        X509Certificate x509Certificate = certificate.getX509Certificate();
+        PrivateKey privateKey = certificate.getPrivateKey();
+        return XMLSigner.signXML(xml, "Project OpenUBL", x509Certificate, privateKey);
+    }
+
     public static InvoiceInputModel invoiceFactory() {
         return InvoiceInputModel.Builder.anInvoiceInputModel()
                 .withSerie("F001")
@@ -83,40 +108,4 @@ public class Main {
                 .build();
     }
 
-    public static String createUnsignedXML() {
-        // General config
-        Config config = UBLConfigSingleton.getInstance().getConfig();
-        SystemClock clock = UBLConfigSingleton.getInstance().getClock();
-
-        // Invoice generation
-        InvoiceInputModel input = invoiceFactory();
-        DocumentWrapper<InvoiceOutputModel> result = DocumentManager.createXML(input, config, clock);
-        return result.getXml();
-    }
-
-    public static Document signXML(String xml) throws Exception {
-        InputStream ksInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("LLAMA-PE-CERTIFICADO-DEMO-12345678912.pfx");
-        CertificateDetails certificate = CertificateDetailsFactory.create(ksInputStream, "password");
-
-        X509Certificate x509Certificate = certificate.getX509Certificate();
-        PrivateKey privateKey = certificate.getPrivateKey();
-        return XMLSigner.signXML(xml, "Project OpenUBL", x509Certificate, privateKey);
-    }
-
-    public static void main(String[] args) throws Exception {
-        // Create XML
-        String xml = createUnsignedXML();
-
-        System.out.println("Your XML is:");
-        System.out.println(xml);
-
-        // Sign XML
-        Document signedXML = signXML(xml);
-
-        byte[] bytesFromDocument = XmlSignatureHelper.getBytesFromDocument(signedXML);
-        String signedXMLString = new String(bytesFromDocument, StandardCharsets.ISO_8859_1);
-
-        System.out.println("\n Your signed XML is:");
-        System.out.println(signedXMLString);
-    }
 }

@@ -23,7 +23,7 @@ import io.github.project.openubl.xmlbuilderlib.models.catalogs.Catalog9;
 
 import java.math.BigDecimal;
 
-public class UBLDefaults implements Config {
+public class ConfigDefaults implements Config {
     private BigDecimal igv = new BigDecimal("0.18");
     private BigDecimal ivap = new BigDecimal("0.04");
     private String defaultMoneda = "PEN";

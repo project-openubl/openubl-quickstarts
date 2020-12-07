@@ -19,36 +19,23 @@ package io.github.project.openubl.quickstart.xbuilder;
 import io.github.project.openubl.xmlbuilderlib.clock.SystemClock;
 import io.github.project.openubl.xmlbuilderlib.config.Config;
 
-import java.util.Calendar;
-import java.util.TimeZone;
+public class ConfigSingleton {
 
-public class UBLConfigSingleton {
-
-    private static UBLConfigSingleton instance;
+    private static ConfigSingleton instance;
 
     private Config config;
     private SystemClock clock;
 
-    private UBLConfigSingleton() {
-        config = new UBLDefaults();
-        clock = new SystemClock() {
-            @Override
-            public TimeZone getTimeZone() {
-                return TimeZone.getTimeZone("America/Lima");
-            }
-
-            @Override
-            public Calendar getCalendarInstance() {
-                return Calendar.getInstance();
-            }
-        };
+    private ConfigSingleton() {
+        config = new ConfigDefaults();
+        clock = new DefaultSystemClock();
     }
 
-    public static UBLConfigSingleton getInstance() {
+    public static ConfigSingleton getInstance() {
         if (instance == null) {
-            synchronized (UBLConfigSingleton.class) {
+            synchronized (ConfigSingleton.class) {
                 if (instance == null) {
-                    instance = new UBLConfigSingleton();
+                    instance = new ConfigSingleton();
                 }
             }
         }
