@@ -16,8 +16,6 @@
  */
 package io.github.project.openubl.quickstart.xbuilder;
 
-import io.github.project.openubl.quickstart.xbuilder.utils.CertificateDetails;
-import io.github.project.openubl.quickstart.xbuilder.utils.CertificateDetailsFactory;
 import io.github.project.openubl.xmlbuilderlib.clock.SystemClock;
 import io.github.project.openubl.xmlbuilderlib.config.Config;
 import io.github.project.openubl.xmlbuilderlib.facade.DocumentManager;
@@ -28,6 +26,8 @@ import io.github.project.openubl.xmlbuilderlib.models.input.common.ProveedorInpu
 import io.github.project.openubl.xmlbuilderlib.models.input.standard.DocumentLineInputModel;
 import io.github.project.openubl.xmlbuilderlib.models.input.standard.invoice.InvoiceInputModel;
 import io.github.project.openubl.xmlbuilderlib.models.output.standard.invoice.InvoiceOutputModel;
+import io.github.project.openubl.xmlbuilderlib.utils.CertificateDetails;
+import io.github.project.openubl.xmlbuilderlib.utils.CertificateDetailsFactory;
 import io.github.project.openubl.xmlbuilderlib.xml.XMLSigner;
 import io.github.project.openubl.xmlbuilderlib.xml.XmlSignatureHelper;
 import org.w3c.dom.Document;
