@@ -32,16 +32,10 @@
     <name>XBuilder quickstart</name>
 
     <dependencies>
-<dependency>
-    <groupId>io.github.project-openubl</groupId>
-    <artifactId>xbuilder</artifactId>
-    <version>${xbuilder.version}</version>
-    <exclusions>
-        <exclusion>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
+        <dependency>
+            <groupId>io.github.project-openubl</groupId>
+            <artifactId>xbuilder</artifactId>
+            <version>${xbuilder.version}</version>
+        </dependency>
     </dependencies>
 </project>
