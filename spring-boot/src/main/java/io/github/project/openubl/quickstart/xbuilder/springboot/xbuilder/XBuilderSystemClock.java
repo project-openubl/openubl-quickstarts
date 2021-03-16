@@ -14,30 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.project.openubl.quickstart.xbuilder.utils;
+package io.github.project.openubl.quickstart.xbuilder.springboot.xbuilder;
 
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
+import io.github.project.openubl.xmlbuilderlib.clock.SystemClock;
 
-public class CertificateDetails {
+import java.util.Calendar;
+import java.util.TimeZone;
 
-    private PrivateKey privateKey;
-
-    private X509Certificate x509Certificate;
-
-    public PrivateKey getPrivateKey() {
-        return privateKey;
+public class XBuilderSystemClock implements SystemClock {
+    @Override
+    public TimeZone getTimeZone() {
+        return TimeZone.getTimeZone("America/Lima");
     }
 
-    public void setPrivateKey(PrivateKey privateKey) {
-        this.privateKey = privateKey;
-    }
-
-    public X509Certificate getX509Certificate() {
-        return x509Certificate;
-    }
-
-    public void setX509Certificate(X509Certificate x509Certificate) {
-        this.x509Certificate = x509Certificate;
+    @Override
+    public Calendar getCalendarInstance() {
+        return Calendar.getInstance();
     }
 }
