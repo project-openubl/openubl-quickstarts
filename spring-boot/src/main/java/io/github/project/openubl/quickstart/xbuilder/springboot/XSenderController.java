@@ -1,13 +1,13 @@
 /**
  * Copyright 2019 Project OpenUBL, Inc. and/or its affiliates
  * and other contributors as indicated by the @author tags.
- *
+ * <p>
  * Licensed under the Eclipse Public License - v 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * https://www.eclipse.org/legal/epl-2.0/
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,6 @@
 package io.github.project.openubl.quickstart.xbuilder.springboot;
 
 import io.github.project.openubl.xsender.Constants;
-import io.github.project.openubl.xsender.camel.StandaloneCamel;
 import io.github.project.openubl.xsender.camel.utils.CamelData;
 import io.github.project.openubl.xsender.camel.utils.CamelUtils;
 import io.github.project.openubl.xsender.company.CompanyCredentials;
@@ -28,15 +27,17 @@ import io.github.project.openubl.xsender.files.ZipFile;
 import io.github.project.openubl.xsender.models.SunatResponse;
 import io.github.project.openubl.xsender.sunat.BillServiceDestination;
 import org.apache.camel.CamelContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 public class XSenderController {
+
+    @Autowired
+    private CamelContext camelContext;
 
     CompanyURLs companyURLs = CompanyURLs.builder()
             .invoice("https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService")
@@ -64,10 +65,6 @@ public class XSenderController {
         BillServiceDestination ticketDestination = fileAnalyzer.getVerifyTicketDestination();
 
         // Send file
-        CamelContext camelContext = StandaloneCamel.getInstance()
-                .getMainCamel()
-                .getCamelContext();
-
         CamelData camelData = CamelUtils.getBillServiceCamelData(zipFile, fileDestination, credentials);
 
         SunatResponse sendFileSunatResponse = camelContext.createProducerTemplate()

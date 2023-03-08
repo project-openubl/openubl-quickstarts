@@ -61,8 +61,6 @@ public class Main {
     public static String createUnsignedXML() {
         // General config
         Defaults defaults = Defaults.builder()
-                .moneda("PEN")
-                .unidadMedida("NIU")
                 .icbTasa(new BigDecimal("0.2"))
                 .igvTasa(new BigDecimal("0.18"))
                 .build();
