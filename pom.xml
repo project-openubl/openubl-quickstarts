@@ -38,7 +38,7 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
 
         <!--xbuilder and xsender-->
-        <xbuilder.version>2.0.0-Beta7</xbuilder.version>
+        <xbuilder.version>2.0.1</xbuilder.version>
         <xsender.version>4.1.3</xsender.version>
 
         <!--wildfly-->
