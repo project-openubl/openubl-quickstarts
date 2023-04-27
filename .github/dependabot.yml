@@ -8,3 +8,17 @@ updates:
     commit-message:
       prefix: "Maven pom.xml"
       include: "scope"
+  - package-ecosystem: "maven"
+    directory: "/spring-boot"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "Maven pom.xml"
+      include: "scope"
+  - package-ecosystem: "maven"
+    directory: "/tomcat"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "Maven pom.xml"
+      include: "scope"
