@@ -63,7 +63,7 @@
         <dependency>
             <groupId>io.github.project-openubl</groupId>
             <artifactId>spring-boot-xsender</artifactId>
-            <version>4.1.4</version>
+            <version>4.1.7</version>
         </dependency>
 
         <!-- Spring minimum libraries -->
