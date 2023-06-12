@@ -35,7 +35,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <tomcat.id>9x</tomcat.id>
-        <tomcat.version>9.0.46</tomcat.version>
+        <tomcat.version>10.1.10</tomcat.version>
     </properties>
 
     <dependencies>
