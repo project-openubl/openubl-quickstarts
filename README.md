@@ -1,1 +1,1 @@
-# openubl-quickstarts
+# Moved to XHandler-java
