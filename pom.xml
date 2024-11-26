@@ -42,7 +42,7 @@
         <xsender.version>4.1.4</xsender.version>
 
         <!--wildfly-->
-        <version.server.bom>26.1.1.Final</version.server.bom>
+        <version.server.bom>26.1.3.Final</version.server.bom>
         <version.wildfly.maven.plugin>2.0.2.Final</version.wildfly.maven.plugin>
 
         <license.dir>${basedir}</license.dir>
